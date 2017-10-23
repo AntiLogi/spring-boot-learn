@@ -81,16 +81,15 @@ public class UserInfo implements Serializable{
         this.roleList = roleList;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "uid=" + uid +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
-                ", state=" + state +
-                ", roleList=" + roleList +
-                '}';
+
+    /**
+     * 密码盐.
+     * @return
+     */
+    public String getCredentialsSalt(){
+        return this.username+this.salt;
     }
+    //重新对盐重新进行了定义，用户名+salt，这样就更加不容易被破解
+
+
 }

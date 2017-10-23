@@ -1,6 +1,7 @@
 package com.cxb.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @create ${date}
  */
 @Entity
-public class SysRole {
+public class SysRole implements Serializable{
     @Id
     @GeneratedValue
     private Integer id; // 编号
@@ -77,15 +78,5 @@ public class SysRole {
         this.userInfos = userInfos;
     }
 
-    @Override
-    public String toString() {
-        return "SysRole{" +
-                "id=" + id +
-                ", role='" + role + '\'' +
-                ", description='" + description + '\'' +
-                ", available=" + available +
-                ", permissions=" + permissions +
-                ", userInfos=" + userInfos +
-                '}';
-    }
+
 }

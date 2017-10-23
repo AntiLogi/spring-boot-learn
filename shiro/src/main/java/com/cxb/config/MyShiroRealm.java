@@ -14,17 +14,21 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 
 public class MyShiroRealm extends AuthorizingRealm {
-    @Resource
+
+    @Autowired
     private IUserInfoService userInfoService;
+
+
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        System.out.println("权限配置-->MyShiroRealmL.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
+        UserInfo userInfo  = (UserInfo)principalCollection.getPrimaryPrincipal();
         for(SysRole role:userInfo.getRoleList()){
             authorizationInfo.addRole(role.getRole());
             for(SysPermission p:role.getPermissions()){
@@ -33,12 +37,15 @@ public class MyShiroRealm extends AuthorizingRealm {
         }
         return authorizationInfo;
     }
-
-    /*主要是用来进行身份认证的，也就是说验证用户输入的账号和密码是否正确。*/
+    /**
+     * 认证信息，身份验证
+     * @param token
+     * @return
+     */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
-            throws AuthenticationException {
-        System.out.println("MyShiroRealm.doGetAuthenticationInfo()");
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+
+        System.out.println("MyShiroRealmL.doGetAuthenticationInfo()");
         //获取用户的输入的账号.
         String username = (String)token.getPrincipal();
         System.out.println(token.getCredentials());
@@ -57,5 +64,4 @@ public class MyShiroRealm extends AuthorizingRealm {
         );
         return authenticationInfo;
     }
-
 }
